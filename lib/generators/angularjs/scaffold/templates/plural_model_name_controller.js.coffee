@@ -1,7 +1,7 @@
 
 root = global ? window
 
-<%= @controller %>IndexCtrl = ($scope, <%= @model_name %>) ->
+<%= @controller %>IndexCtrl = ($scope, <%= @model_name %>, flash) ->
   $scope.<%= @plural_model_name %> = <%= @model_name %>.query()
 
   $scope.destroy = ->
@@ -9,19 +9,21 @@ root = global ? window
       original = @<%= @resource_name %>
       @<%= @resource_name %>.destroy ->
         $scope.<%= @plural_model_name %> = _.without($scope.<%= @plural_model_name %>, original)
+        flash.success = "<%= @model_name %> destroyed successfully"
         
-<%= @controller %>IndexCtrl.$inject = ['$scope', '<%= @model_name %>'];
+<%= @controller %>IndexCtrl.$inject = ['$scope', '<%= @model_name %>', 'flash'];
 
-<%= @controller %>CreateCtrl = ($scope, $location, <%= @model_name %>) ->
+<%= @controller %>CreateCtrl = ($scope, $location, <%= @model_name %>, flash) ->
   $scope.save = ->
     <%= @model_name %>.save $scope.<%= @resource_name %>, (<%= @resource_name %>) ->
-      $location.path "/<%= @plural_model_name %>/#{<%= @resource_name %>.id}/edit"
+      $location.path "/<%= @plural_model_name %>"
+      flash.success = "<%= @model_name %> created successfully"
+      
+<%= @controller %>CreateCtrl.$inject = ['$scope', '$location', '<%= @model_name %>', 'flash'];
 
-<%= @controller %>CreateCtrl.$inject = ['$scope', '$location', '<%= @model_name %>'];
-
-<%= @controller %>ShowCtrl = ($scope, $location, $routeParams, <%= @model_name %>) ->
+<%= @controller %>ShowCtrl = ($scope, $location, $stateParams, <%= @model_name %>, flash) ->
   <%= @model_name %>.get
-    id: $routeParams.id
+    id: $stateParams.id
   , (<%= @resource_name %>) ->
     @original = <%= @resource_name %>
     $scope.<%= @resource_name %> = new <%= @model_name %>(@original)
@@ -30,12 +32,13 @@ root = global ? window
     if confirm("Are you sure?")
       $scope.<%= @resource_name %>.destroy ->
         $location.path "/<%= @plural_model_name %>"
+        flash.success = "<%= @model_name %> destroyed successfully"
+        
+<%= @controller %>ShowCtrl.$inject = ['$scope', '$location', '$stateParams', '<%= @model_name %>', 'flash'];
 
-<%= @controller %>ShowCtrl.$inject = ['$scope', '$location', '$routeParams', '<%= @model_name %>'];
-
-<%= @controller %>EditCtrl = ($scope, $location, $routeParams, <%= @model_name %>) ->
+<%= @controller %>EditCtrl = ($scope, $location, $stateParams, <%= @model_name %>, flash) ->
   <%= @model_name %>.get
-    id: $routeParams.id
+    id: $stateParams.id
   , (<%= @resource_name %>) ->
     @original = <%= @resource_name %>
     $scope.<%= @resource_name %> = new <%= @model_name %>(@original)
@@ -48,12 +51,14 @@ root = global ? window
     if confirm("Are you sure?")
       $scope.<%= @resource_name %>.destroy ->
         $location.path "/<%= @plural_model_name %>"
+        flash.success = "<%= @model_name %> destroyed successfully"
 
   $scope.save = ->
     <%= @model_name %>.update $scope.<%= @resource_name %>, (<%= @resource_name %>) ->
       $location.path "/<%= @plural_model_name %>"
+      flash.success = "<%= @model_name %> saved successfully"
 
-<%= @controller %>EditCtrl.$inject = ['$scope', '$location', '$routeParams', '<%= @model_name %>'];
+<%= @controller %>EditCtrl.$inject = ['$scope', '$location', '$stateParams', '<%= @model_name %>', 'flash'];
 
 # exports
 root.<%= @controller %>IndexCtrl  = <%= @controller %>IndexCtrl
