@@ -5,11 +5,7 @@ root = global ? window
   $scope.<%= @plural_model_name %> = <%= @model_name %>.query()
 
   $scope.destroy = ->
-    if confirm("Are you sure?")
-      original = @<%= @resource_name %>
-      @<%= @resource_name %>.destroy ->
-        $scope.<%= @plural_model_name %> = _.without($scope.<%= @plural_model_name %>, original)
-        flash.success = "<%= @model_name %> destroyed successfully"
+    @<%= @resource_name %>.confirm_destroy($scope)
         
 <%= @controller %>IndexCtrl.$inject = ['$scope', '<%= @model_name %>', 'flash'];
 
@@ -29,10 +25,7 @@ root = global ? window
     $scope.<%= @resource_name %> = new <%= @model_name %>(@original)
 
   $scope.destroy = ->
-    if confirm("Are you sure?")
-      $scope.<%= @resource_name %>.destroy ->
-        $location.path "/<%= @plural_model_name %>"
-        flash.success = "<%= @model_name %> destroyed successfully"
+    @<%= @resource_name %>.confirm_destroy($scope)
         
 <%= @controller %>ShowCtrl.$inject = ['$scope', '$location', '$stateParams', '<%= @model_name %>', 'flash'];
 
@@ -48,10 +41,7 @@ root = global ? window
     angular.equals @original, $scope.<%= @resource_name %>
 
   $scope.destroy = ->
-    if confirm("Are you sure?")
-      $scope.<%= @resource_name %>.destroy ->
-        $location.path "/<%= @plural_model_name %>"
-        flash.success = "<%= @model_name %> destroyed successfully"
+    @<%= @resource_name %>.confirm_destroy($scope)
 
   $scope.save = ->
     <%= @model_name %>.update $scope.<%= @resource_name %>, (<%= @resource_name %>) ->

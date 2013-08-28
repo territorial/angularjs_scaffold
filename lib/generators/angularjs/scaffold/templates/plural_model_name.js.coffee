@@ -25,7 +25,7 @@ root = global ? window
   
 ])
 
-<%= @plural_model_name %>_mod.factory "<%= @model_name %>", ['$resource', ($resource) ->
+<%= @plural_model_name %>_mod.factory "<%= @model_name %>", ['$resource', "$location", "flash",  ($resource, $location, flash) ->
   <%= "#{@model_name}" %> = $resource("/<%= @plural_model_name %>/:action/:id",
     id: "@id",
     format: "json"
@@ -40,7 +40,24 @@ root = global ? window
     <%= "#{@model_name}" %>.remove
       id: @id
     , cb
+  
+  <%= @model_name  %>::confirm_destroy = ($scope) ->
+    console.log "confirm_destroy called"
+    
+    $scope.curr_<%= @model_name.downcase  %> = this
+    bootbox.confirm "Are you sure ?", (confirmed) ->
 
+      if confirmed
+        $scope.$apply ->
+          $scope.curr_<%= @model_name.downcase  %>.destroy ->
+            console.log "Destroyed " + $scope.curr_<%= @model_name.downcase  %>.id + " in confirmed callback"
+            $scope.<%= @plural_model_name %> = _.without($scope.<%= @plural_model_name %>, $scope.curr_<%= @model_name.downcase  %>)
+            flash.success = "Deleted <%= @model_name.downcase  %> successfully"
+            $location.path("/<%= @plural_model_name %>")
+
+      else
+        console.log "Cancelled"
+        
   <%= "#{@model_name}" %>
 ]
 
