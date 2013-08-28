@@ -14,6 +14,8 @@ module Angularjs
       if File.exist?('app/assets/javascripts/application.js')
         insert_into_file "app/assets/javascripts/application.js",
           "//= require_tree ./angularjs/\n", :after => "jquery_ujs\n"
+        insert_into_file "app/assets/javascripts/application.js",
+                  "//= require_tree ./angular-libs/\n", :after => "angularjs\n"
       else
         copy_file "application.js", "app/assets/javascripts/application.js"
       end
@@ -24,8 +26,11 @@ module Angularjs
       elsif !File.exist?('app/assets/stylesheets/application.css')
         create_file @application_css_file
       end
+      
       directory "underscore", "app/assets/javascripts/underscore/"
       directory "angularjs", "app/assets/javascripts/angularjs/"
+      directory "angular-libs", "app/assets/javascripts/angular-libs/"
+      
       if options["no-jquery"]
         gsub_file "app/assets/javascripts/application.js",
           /\/\/= require jquery_ujs\n/, ''
