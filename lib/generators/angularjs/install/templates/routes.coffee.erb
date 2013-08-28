@@ -1,15 +1,32 @@
 root = global ? window
 angular = root.angular
 
-thisApp = angular.module("Client", ['ngCookies']).config(['$routeProvider', '$locationProvider' , 
-($routeProvider, $locationProvider) ->
+thisApp = angular.module("Client", ['ngCookies','ui.router', 'ui.compat', 'angular-flash.flash-alert-directive'])
+.config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider',
+($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) ->
+  
   #$locationProvider.hashPrefix('');
   $locationProvider.html5Mode true
-  $routeProvider.when("/",
-    controller: "WelcomeCtrl"
+  
+  $urlRouterProvider.otherwise("/")
+  
+  $stateProvider.state("/",
+    url: "/",
+  	controller: "WelcomeCtrl",
     templateUrl: "<%= asset_path('welcome/index.html') %>"
-  ).otherwise redirectTo: "/"
+  )
+  
+  # This ensures that unauthorized requests are handled properly
+  # $httpProvider.interceptors.push "EC_Interceptor"
+  
+]).run (['$rootScope', 'User', 'flash', ($rootScope, User, flash) ->
+  
+  # This allows for an already logged in users session info to be pulled into the angular app
+  # User.is_logged_in (user) ->
+  #  if user.email
+  #    $rootScope.current_user = user 
+  #  console.log "Current User is #{user.email}"
+    
 ])
-
 root.thisApp = thisApp
 
