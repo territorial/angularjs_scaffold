@@ -1,6 +1,6 @@
 root = global ? window
 
-<%= @plural_model_name %>_mod = angular.module("<%= @plural_model_name %>", ["ngResource"])
+<%= @plural_model_name %>_mod = angular.module("<%= @plural_model_name %>", ["ngResource", "ui.router"])
 
 <%= @plural_model_name %>_mod.config(['$stateProvider', ($stateProvider) ->
 

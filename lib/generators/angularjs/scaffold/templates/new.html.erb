@@ -8,7 +8,7 @@
         <label class="col-sm-2 control-label">
           <%= column.name.titleize %>
         </label>
-        <div class="col-sm-10 controls">
+        <div class="col-sm-5 controls">
           <%- if ['description', 'body'].include? column.name -%>
             <textarea name="<%= @resource_name%>[<%= column.name %>]"
                    ng-model="<%= @resource_name%>.<%= column.name %>"
