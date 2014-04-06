@@ -9,11 +9,11 @@
 <%- end -%>
 <div class="form-actions">
   <a href="/<%= @plural_model_name%>/{{<%= @resource_name%>.id}}/edit"
-    class="btn btn-primary"><i class="icon-edit"></i>
+    class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i>
     Edit <%= @model_name.titleize %>
   </a>
   <button ng-click="destroy()" class="btn btn-danger">
-    <i class="icon-trash"></i> Delete
+    <i class="glyphicon glyphicon-trash"></i> Delete
   </button>
   <a href="/<%= @plural_model_name%>" class="btn">
     Back to <%= @plural_model_name%>

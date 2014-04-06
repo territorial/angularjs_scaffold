@@ -3,7 +3,7 @@
 	<%= @controller %>
 	<span class="pull-right">
 	  <a href='/<%= @plural_model_name%>/new' class="btn btn-primary">
-	    <i class="icon-plus"></i>New
+	    <i class="glyphicon glyphicon-plus"></i>New
 	  </a>
 	</span>
 	
@@ -33,11 +33,11 @@
       <%- end -%>
       <td>
         <a href="/<%= @plural_model_name%>/{{<%= @resource_name%>.id}}/edit"
-          class="btn btn-primary"><i class="icon-edit"></i>
+          class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i>
           Edit
         </a>
         <button ng-click="destroy()" class="btn btn-danger">
-          <i class="icon-trash"></i> Delete
+          <i class="glyphicon glyphicon-trash"></i> Delete
         </button>
       </td>
     </tr>

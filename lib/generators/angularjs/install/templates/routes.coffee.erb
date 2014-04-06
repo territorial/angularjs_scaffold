@@ -1,7 +1,7 @@
 root = global ? window
 angular = root.angular
 
-thisApp = angular.module("Client", ['ngCookies','ui.router', 'ui.compat', 'angular-flash.flash-alert-directive'])
+thisApp = angular.module("Client", ['templates', 'ngCookies','ui.router', 'angular-flash.flash-alert-directive'])
 .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$httpProvider',
 ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) ->
   

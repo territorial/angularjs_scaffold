@@ -50,13 +50,13 @@ module Angularjs
       inject_into_class "app/controllers/#{@plural_model_name}_controller.rb",
         "#{@controller}Controller".constantize, "respond_to :json\n"
       template "new.html.erb",
-        "app/assets/templates/#{@plural_model_name}/new.html.erb"
+        "app/assets/javascripts/templates/#{@plural_model_name}/new.html.erb"
       template "edit.html.erb",
-        "app/assets/templates/#{@plural_model_name}/edit.html.erb"
+        "app/assets/javascripts/templates/#{@plural_model_name}/edit.html.erb"
       template "show.html.erb",
-        "app/assets/templates/#{@plural_model_name}/show.html.erb"
+        "app/assets/javascripts/templates/#{@plural_model_name}/show.html.erb"
       template "index.html.erb",
-        "app/assets/templates/#{@plural_model_name}/index.html.erb"
+        "app/assets/javascripts/templates/#{@plural_model_name}/index.html.erb"
 
       model_index_link = "\n<li><%= link_to \'#{@controller_name}\', #{@plural_model_name}_path  %></li>"
       
