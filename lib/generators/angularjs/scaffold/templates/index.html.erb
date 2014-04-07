@@ -1,47 +1,50 @@
-<div>
-<legend>
-	<%= @controller %>
-	<span class="pull-right">
-	  <a href='/<%= @plural_model_name%>/new' class="btn btn-primary">
-	    <i class="glyphicon glyphicon-plus"></i>New
-	  </a>
-	</span>
+<div class="page page-table">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<strong><span class="glyphicon glyphicon-th"></span> <%= @controller %> </strong>
+			<span class="pull-right">
+			  <a href='/<%= @plural_model_name%>/new' class="btn btn-primary btn-xs">
+			    <i class="glyphicon glyphicon-plus"></i>New
+			  </a>
+			</span>
+		</div>
+
+		<table class="table table-hover">
+		  <thead>
+		    <tr>
+		      <%- columns.each do |column| -%>
+		        <th><%= column.name.humanize %></th>
+		      <%- end -%>
+		      <th>Actions</th>
+		    </tr>
+		  </thead>
+		  <%- @columns = columns -%>
+		  <%- tag_column = @columns.shift -%>
+		  <tbody>
+		    <tr ng-repeat="<%= @resource_name%> in <%= @plural_model_name%>">
+		      <td>
+		        <a href="/<%= @plural_model_name%>/{{<%= @resource_name%>.id}}">
+		          {{<%= "#{@resource_name}.#{tag_column.name}"%>}}
+		        </a>
+		      </td>
+		      <%- @columns.each do |column| -%>
+		        <td>
+		          {{<%= @resource_name%>.<%= column.name %>}}
+		        </td>
+		      <%- end -%>
+		      <td>
+		        <a href="/<%= @plural_model_name%>/{{<%= @resource_name%>.id}}/edit"
+		          class="btn btn-primary btn-sm"><i class="glyphicon glyphicon-edit"></i>
+		          Edit
+		        </a>
+		        <button ng-click="destroy()" class="btn btn-danger btn-sm">
+		          <i class="glyphicon glyphicon-trash"></i> Delete
+		        </button>
+		      </td>
+		    </tr>
+		  </tbody>
+		</table>
 	
-</legend>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <%- columns.each do |column| -%>
-        <th><%= column.name.humanize %></th>
-      <%- end -%>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <%- @columns = columns -%>
-  <%- tag_column = @columns.shift -%>
-  <tbody>
-    <tr ng-repeat="<%= @resource_name%> in <%= @plural_model_name%>">
-      <td>
-        <a href="/<%= @plural_model_name%>/{{<%= @resource_name%>.id}}">
-          {{<%= "#{@resource_name}.#{tag_column.name}"%>}}
-        </a>
-      </td>
-      <%- @columns.each do |column| -%>
-        <td>
-          {{<%= @resource_name%>.<%= column.name %>}}
-        </td>
-      <%- end -%>
-      <td>
-        <a href="/<%= @plural_model_name%>/{{<%= @resource_name%>.id}}/edit"
-          class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i>
-          Edit
-        </a>
-        <button ng-click="destroy()" class="btn btn-danger">
-          <i class="glyphicon glyphicon-trash"></i> Delete
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+	</div>
 
 </div>

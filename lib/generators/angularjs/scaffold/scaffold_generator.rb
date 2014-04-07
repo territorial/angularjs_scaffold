@@ -7,7 +7,7 @@ module Angularjs
     argument :controller_name, type: :string
 
     def language_option
-      if File.exist?("app/assets/javascripts/routes.js.erb")
+      if File.exist?("app/assets/javascripts/app/routes.js.erb")
         answer = 'javascript'
       else
         answer = 'coffeescript'
@@ -67,17 +67,15 @@ module Angularjs
         after: "<!-- main menu models -->"
       
       if language_option == 'coffeescript'
-        remove_file "app/assets/javascripts/#{@plural_model_name}.js"
-        remove_file "app/assets/javascripts/#{@plural_model_name}_controller.js"
-        template "plural_model_name.js.coffee", "app/assets/javascripts/#{@plural_model_name}.js.coffee.erb"
-        template "plural_model_name_controller.js.coffee",
-          "app/assets/javascripts/#{@plural_model_name}_controller.js.coffee"
+        remove_file "app/assets/javascripts/app/#{@plural_model_name}.js"
+        remove_file "app/assets/javascripts/app/#{@plural_model_name}_controller.js"
+        template "plural_model_name.js.coffee", "app/assets/javascripts/app/#{@plural_model_name}.js.coffee.erb"
+        template "plural_model_name_controller.js.coffee", "app/assets/javascripts/app/#{@plural_model_name}_controller.js.coffee"
       else
-        remove_file "app/assets/javascripts/#{@plural_model_name}.js.coffee"
-        remove_file "app/assets/javascripts/#{@plural_model_name}_controller.js.coffee"
-        template "plural_model_name.js", "app/assets/javascripts/#{@plural_model_name}.js.erb"
-        template "plural_model_name_controller.js",
-          "app/assets/javascripts/#{@plural_model_name}_controller.js"
+        remove_file "app/assets/javascripts/app/#{@plural_model_name}.js.coffee"
+        remove_file "app/assets/javascripts/app/#{@plural_model_name}_controller.js.coffee"
+        template "plural_model_name.js", "app/assets/javascripts/app/#{@plural_model_name}.js.erb"
+        template "plural_model_name_controller.js", "app/assets/javascripts/app/#{@plural_model_name}_controller.js"
         # remove the default .js.coffee file added by rails.
         remove_file "app/assets/javascripts/#{@plural_model_name}.js.coffee"
       end

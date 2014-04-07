@@ -1,47 +1,53 @@
-<form name="new<%= @model_name%>" class="form-horizontal" role="form">
-  <fieldset>
-    <legend>
-      New <%= @model_name.titleize %>
-    </legend>
-    <%- columns.each do |column| -%>
-      <div class="form-group">
-        <label class="col-sm-2 control-label">
-          <%= column.name.titleize %>
-        </label>
-        <div class="col-sm-5 controls">
-          <%- if ['description', 'body'].include? column.name -%>
-            <textarea name="<%= @resource_name%>[<%= column.name %>]"
-                   ng-model="<%= @resource_name%>.<%= column.name %>"
-                   class="<%= column.field_type %> form-control"
-                   required></textarea>
-          <%- else -%>
-            <input type="<%= column.field_type.to_s.split('_').first %>"
-                   name="<%= @resource_name%>[<%= column.name %>]"
-                   ng-model="<%= @resource_name%>.<%= column.name %>"
-                   class="<%= column.field_type %> form-control"
-                   required>
-          <%- end -%>
-          <span ng-show="new<%= @model_name%>.<%= column.name %>.$error.required"
-                class="help-inline">
-            Required
-          </span>
-        </div>
-      </div>
-    <%- end -%>
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">		
-	      <button class="btn btn-success" ng-click="save()"
-	        ng-disabled="isClean() || new<%= @model_name%>.$invalid">
-	        <i class="glyphicon glyphicon-save"></i> Save
-	      </button>
-	      <button ng-click="destroy()"
-	              ng-show="<%= @resource_name%>.id"
-	              class="btn btn-danger">
-	              <i class="glyphicon glyphicon-trash"></i> Delete
-	      </button>
-	      <a href="/<%= @plural_model_name%>" class="btn">Back to <%= @plural_model_name%></a>
-      </div>
-    </div>
-  </fieldset>
-</form>
-
+<div class="page col-md-6">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<strong><span class="glyphicon glyphicon-th"></span> New <%= @model_name.titleize %></strong>
+		</div>
+		
+		<div class="panel-body">
+			<form name="new<%= @model_name%>" class="form-horizontal" role="form">
+			  <fieldset>
+			    <%- columns.each do |column| -%>
+			      <div class="form-group">
+			        <label class="col-sm-4 control-label">
+			          <%= column.name.titleize %>
+			        </label>
+			        <div class="col-sm-8 controls">
+			          <%- if ['description', 'body'].include? column.name -%>
+			            <textarea name="<%= @resource_name%>[<%= column.name %>]"
+			                   ng-model="<%= @resource_name%>.<%= column.name %>"
+			                   class="<%= column.field_type %> form-control"
+			                   required></textarea>
+			          <%- else -%>
+			            <input type="<%= column.field_type.to_s.split('_').first %>"
+			                   name="<%= @resource_name%>[<%= column.name %>]"
+			                   ng-model="<%= @resource_name%>.<%= column.name %>"
+			                   class="<%= column.field_type %> form-control"
+			                   required>
+			          <%- end -%>
+			          <span ng-show="new<%= @model_name%>.<%= column.name %>.$error.required"
+			                class="help-inline">
+			            Required
+			          </span>
+			        </div>
+			      </div>
+			    <%- end -%>
+			    <div class="form-group">
+			      <div class="col-sm-offset-4 col-sm-8">		
+				      <button class="btn btn-success" ng-click="save()"
+				        ng-disabled="isClean() || new<%= @model_name%>.$invalid">
+				        <i class="glyphicon glyphicon-save"></i> Save
+				      </button>
+				      <button ng-click="destroy()"
+				              ng-show="<%= @resource_name%>.id"
+				              class="btn btn-danger">
+				              <i class="glyphicon glyphicon-trash"></i> Delete
+				      </button>
+				      <a href="/<%= @plural_model_name%>" class="btn btn-default">Back to <%= @plural_model_name%></a>
+			      </div>
+			    </div>
+			  </fieldset>
+			</form>
+		</div>
+	</div>
+</div>
