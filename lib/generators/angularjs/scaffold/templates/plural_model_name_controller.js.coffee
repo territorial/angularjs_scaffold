@@ -3,6 +3,11 @@ root = global ? window
 
 <%= @controller %>IndexCtrl = ($scope, <%= @model_name %>, flash) ->
   $scope.<%= @plural_model_name %> = <%= @model_name %>.query()
+  $scope.<%= @plural_model_name %>.$promise.then ((data) ->
+      # success handler
+    ), (error) ->
+      bootbox.alert {title: "Error", message: "Failed to perform this operation. #{error}"}
+      # error handler
 
   $scope.destroy = ->
     @<%= @resource_name %>.confirm_destroy($scope)
@@ -14,7 +19,9 @@ root = global ? window
     <%= @model_name %>.save $scope.<%= @resource_name %>, (<%= @resource_name %>) ->
       $location.path "/<%= @plural_model_name %>"
       flash.success = "<%= @model_name %> created successfully"
-      
+    , (error) ->
+      bootbox.alert {title: "Error", message: "Failed to perform this operation. #{error}"}
+       
 <%= @controller %>CreateCtrl.$inject = ['$scope', '$location', '<%= @model_name %>', 'flash'];
 
 <%= @controller %>ShowCtrl = ($scope, $location, $stateParams, <%= @model_name %>, flash) ->
@@ -23,7 +30,9 @@ root = global ? window
   , (<%= @resource_name %>) ->
     @original = <%= @resource_name %>
     $scope.<%= @resource_name %> = new <%= @model_name %>(@original)
-
+  , (error) ->
+    bootbox.alert {title: "Error", message: "Failed to perform this operation. #{error}"}
+      
   $scope.destroy = ->
     @<%= @resource_name %>.confirm_destroy($scope)
         
@@ -35,7 +44,9 @@ root = global ? window
   , (<%= @resource_name %>) ->
     @original = <%= @resource_name %>
     $scope.<%= @resource_name %> = new <%= @model_name %>(@original)
-
+  , (error) ->
+    bootbox.alert {title: "Error", message: "Failed to perform this operation. #{error}"}
+      
   $scope.isClean = ->
     console.log "[<%= @controller %>EditCtrl, $scope.isClean]"
     angular.equals @original, $scope.<%= @resource_name %>
@@ -47,6 +58,8 @@ root = global ? window
     <%= @model_name %>.update $scope.<%= @resource_name %>, (<%= @resource_name %>) ->
       $location.path "/<%= @plural_model_name %>"
       flash.success = "<%= @model_name %> saved successfully"
+    , (error) ->
+      bootbox.alert {title: "Error", message: "Failed to perform this operation. #{error}"}
 
 <%= @controller %>EditCtrl.$inject = ['$scope', '$location', '$stateParams', '<%= @model_name %>', 'flash'];
 

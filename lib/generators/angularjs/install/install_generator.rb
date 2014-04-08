@@ -1,67 +1,25 @@
 module Angularjs
   class InstallGenerator < Rails::Generators::Base
     source_root File.expand_path('../templates', __FILE__)
-    class_option 'layout-type', type: :string, default: "fixed",
-      banner: "*fixed or fluid", aliases: ["-lt"]
-    class_option 'no-jquery', type: :boolean, aliases: ["-njq"],
-      desc: "Don't include jquery"
-    class_option 'no-bootstrap', type: :boolean, aliases: ["-nb"],
-      desc: "Don't include bootstrap"
-    class_option 'language', type: :string, default: 'coffeescript', aliases: ["-ln"],
-      desc: "Choose your preferred language, 'coffeescript' or 'javascript' "
 
     def init_angularjs
-      if File.exist?('app/assets/javascripts/application.js')
-        insert_into_file "app/assets/javascripts/application.js",
-          "//= require_tree ./angularjs/\n", :after => "jquery_ujs\n"
-        insert_into_file "app/assets/javascripts/application.js",
-                  "//= require_tree ./angular-libs/\n", :after => "angularjs\n"
-      else
-        copy_file "application.js", "app/assets/javascripts/application.js"
-      end
-      @application_css_file ='app/assets/stylesheets/application.css'
-      if (!(File.exist?('app/assets/stylesheets/application.css')) &&
-          File.exist?('app/assets/stylesheets/application.css.scss'))
-        @application_css_file ='app/assets/stylesheets/application.css.scss'
-      elsif !File.exist?('app/assets/stylesheets/application.css')
-        create_file @application_css_file
-      end
+      
+      copy_file "application.js", "app/assets/javascripts/application.js"
+      
+      remove_file "app/assets/stylesheets/application.css"
+      @application_css_file ='app/assets/stylesheets/application.css.scss'      
+      copy_file "application.css.scss", @application_css_file
       
       directory "underscore", "app/assets/javascripts/underscore/"
       directory "angularjs", "app/assets/javascripts/angularjs/"
       directory "angular-libs", "app/assets/javascripts/angular-libs/"
+      directory "app", "app/assets/javascripts/app/"
       
-      if options["no-jquery"]
-        gsub_file "app/assets/javascripts/application.js",
-          /\/\/= require jquery_ujs\n/, ''
-        gsub_file "app/assets/javascripts/application.js",
-          /\/\/= require jquery\n/, ''
-        #gsub_file "app/assets/javascripts/application.js",
-        #  /^$\n/, ''
-      end
     end
 
     def init_twitter_bootstrap_assets
       unless options["no-bootstrap"]
-        directory "fonts", "app/assets/fonts/"
-        directory "fontawesome", "app/assets/stylesheets/fontawesome/"
-        directory "bootstrap/css", "app/assets/stylesheets/bootstrap/"
-        directory "bootstrap/js", "app/assets/javascripts/bootstrap/"
-        directory "bootstrap/img", "app/assets/javascripts/img/"
-        insert_into_file @application_css_file,
-          " *= require bootstrap/bootstrap.min.css\n", :after => "require_self\n"
-        insert_into_file @application_css_file,
-          " *= require bootstrap/bootstrap-responsive.min.css\n",
-          :after => "bootstrap.min.css\n"
-        insert_into_file @application_css_file,
-          " *= require fontawesome/font-awesome.css\n",
-          :after => "bootstrap-responsive.min.css\n"
-        append_to_file @application_css_file,
-          "\nbody { padding-top: 60px; }\n"
-        unless options["no-jquery"]
-          insert_into_file "app/assets/javascripts/application.js",
-            "//= require_tree ./bootstrap/\n", after: "angularjs/\n"
-        end
+        directory "bootstrap/", "app/assets/javascripts/bootstrap/"      
       end
     end
 
@@ -69,65 +27,38 @@ module Angularjs
     def init_twitter_bootstrap_layout
       @app_name = Rails.application.class.parent_name
       @container_class = options["layout-type"] == "fluid" ? "container-fluid" : "container"
-      @language = options["language"] == 'javascript' ? "javascript" : "coffeescript"
+      @language = "coffeescript"
       template "application.html.erb", "app/views/layouts/application.html.erb"
     end
 
     def generate_welcome_controller
       remove_file "public/index.html"
-      uncomment_lines 'config/routes.rb', /root :to => 'welcome#index'/
-        run "rails g controller welcome index"
-      copy_file "AngularJS-medium.png", "app/assets/images/AngularJS-medium.png"
-      copy_file 'favicon.ico', "app/assets/images/favicon.ico"
       empty_directory "app/assets/templates"
-      empty_directory "app/assets/templates/welcome"
-      copy_file "index_welcome.html.erb", "app/assets/templates/welcome/index.html.erb"
+      
       if @language == 'coffeescript'
-        if File.exists?('app/assets/javascripts/routes.js.erb')
-          remove_file 'app/assets/javascripts/routes.js.erb'
+        copy_file "routes.coffee.erb", "app/assets/javascripts/app/routes.coffee.erb"
+        insert_into_file "app/assets/javascripts/app/routes.coffee.erb", @app_name, before: 'Client'
+        ['csrf_controller', 'session_service'].each do |file|
+          copy_file "#{file}.js.coffee",
+            "app/assets/javascripts/app/#{file}.js.coffee"
         end
-        copy_file "routes.coffee.erb", "app/assets/javascripts/routes.coffee.erb"
-        insert_into_file "app/assets/javascripts/routes.coffee.erb", @app_name, before: 'Client'
-        ['csrf', 'welcome'].each do |prefix|
-          copy_file "#{prefix}_controller.js.coffee",
-            "app/assets/javascripts/#{prefix}_controller.js.coffee"
-          remove_file "app/assets/javascripts/#{prefix}_controller.js"
-        end
-        # insert_into_file "app/assets/javascripts/welcome_controller.js.coffee", @app_name, before: 'Client'
-      else # javascript
-        if File.exists?('app/assets/javascripts/routes.coffee.erb')
-          remove_file 'app/assets/javascripts/routes.coffee.erb'
-        end
-        copy_file "routes.js.erb", "app/assets/javascripts/routes.js.erb" #if File.exists?("app/assets/javascripts/routes.js.erb")
-        # Rails.logger.info "#{__FILE__}, #{__LINE__}, @app_name: #{@app_name}"
-        insert_into_file "app/assets/javascripts/routes.js.erb", @app_name, before: 'Client'
-        ['csrf', 'welcome'].each do |prefix|
-          copy_file "#{prefix}_controller.js",
-            "app/assets/javascripts/#{prefix}_controller.js"
-          remove_file "app/assets/javascripts/#{prefix}_controller.js.coffee" # if File.exists?("app/assets/javascripts/#{prefix}_controller.js.coffee")
-        end
-        # insert_into_file "app/assets/javascripts/welcome_controller.js", @app_name, before: 'Client'
       end
-      # append_to_file "app/assets/javascripts/application.js",
-      #   "//= require routes\n"
-      # append_to_file "app/assets/javascripts/application.js",
-      #   "//= require welcome_controller\n"
-      append_to_file @application_css_file,
-        ".center {text-align: center;}\n"
-      insert_into_file "app/controllers/application_controller.rb",
-%{
-  private
 
-  # AngularJS automatically sends CSRF token as a header called X-XSRF
-  # this makes sure rails gets it
-  def verified_request?
-    !protect_against_forgery? || request.get? ||
-      form_authenticity_token == params[request_forgery_protection_token] ||
-      form_authenticity_token == request.headers['X-CSRF-Token'] ||
-      form_authenticity_token == (request.headers['X-XSRF-Token'].chomp('"').reverse.chomp('"').reverse if request.headers['X-XSRF-Token'])
-  end
- }, before: "end"
+      insert_into_file "app/controllers/application_controller.rb",
+        %{
+          private
+        
+          # AngularJS automatically sends CSRF token as a header called X-XSRF
+          # this makes sure rails gets it
+          def verified_request?
+            !protect_against_forgery? || request.get? ||
+              form_authenticity_token == params[request_forgery_protection_token] ||
+              form_authenticity_token == cookies['XSRF-TOKEN'] ||
+              form_authenticity_token == request.headers['X-CSRF-Token'] ||
+              form_authenticity_token == (request.headers['X-XSRF-Token'].chomp('"').reverse.chomp('"').reverse if request.headers['X-XSRF-Token'])
+          end
+         }, before: "end"
 
     end
-  end
+  end  
 end

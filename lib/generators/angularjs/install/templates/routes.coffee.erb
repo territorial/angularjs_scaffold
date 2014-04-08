@@ -10,22 +10,10 @@ thisApp = angular.module("Client", ['templates', 'ngCookies','ui.router', 'angul
   
   $urlRouterProvider.otherwise("/")
   
-  $stateProvider.state("/",
-    url: "/",
-  	controller: "WelcomeCtrl",
-    templateUrl: "<%= asset_path('welcome/index.html') %>"
-  )
-  
-  # This ensures that unauthorized requests are handled properly
-  # $httpProvider.interceptors.push "EC_Interceptor"
   
 ]).run (['$rootScope', 'User', 'flash', ($rootScope, User, flash) ->
   
-  # This allows for an already logged in users session info to be pulled into the angular app
-  # User.is_logged_in (user) ->
-  #  if user.email
-  #    $rootScope.current_user = user 
-  #  console.log "Current User is #{user.email}"
+  
     
 ])
 root.thisApp = thisApp
