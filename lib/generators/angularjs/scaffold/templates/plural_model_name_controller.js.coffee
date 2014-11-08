@@ -6,7 +6,7 @@ root = global ? window
   $scope.<%= @plural_model_name %>.$promise.then ((data) ->
       # success handler
     ), (error) ->
-      bootbox.alert {title: "Error", message: "Failed to perform this operation. #{error}"}
+      bootbox.alert {title: "Error", message: "Failed to perform this operation. #{error.status}"}
       # error handler
 
   $scope.destroy = ->
@@ -20,7 +20,7 @@ root = global ? window
       $location.path "/<%= @plural_model_name %>"
       flash.success = "<%= @model_name %> created successfully"
     , (error) ->
-      bootbox.alert {title: "Error", message: "Failed to perform this operation. #{error}"}
+      bootbox.alert {title: "Error", message: "Failed to perform this operation. #{error.status}"}
        
 <%= @controller %>CreateCtrl.$inject = ['$scope', '$location', '<%= @model_name %>', 'flash'];
 
@@ -31,7 +31,7 @@ root = global ? window
     @original = <%= @resource_name %>
     $scope.<%= @resource_name %> = new <%= @model_name %>(@original)
   , (error) ->
-    bootbox.alert {title: "Error", message: "Failed to perform this operation. #{error}"}
+    bootbox.alert {title: "Error", message: "Failed to perform this operation. #{error.status}"}
       
   $scope.destroy = ->
     @<%= @resource_name %>.confirm_destroy($scope)
@@ -45,7 +45,7 @@ root = global ? window
     @original = <%= @resource_name %>
     $scope.<%= @resource_name %> = new <%= @model_name %>(@original)
   , (error) ->
-    bootbox.alert {title: "Error", message: "Failed to perform this operation. #{error}"}
+    bootbox.alert {title: "Error", message: "Failed to perform this operation. #{error.status}"}
       
   $scope.isClean = ->
     console.log "[<%= @controller %>EditCtrl, $scope.isClean]"
@@ -59,7 +59,7 @@ root = global ? window
       $location.path "/<%= @plural_model_name %>"
       flash.success = "<%= @model_name %> saved successfully"
     , (error) ->
-      bootbox.alert {title: "Error", message: "Failed to perform this operation. #{error}"}
+      bootbox.alert {title: "Error", message: "Failed to perform this operation. #{error.status}"}
 
 <%= @controller %>EditCtrl.$inject = ['$scope', '$location', '$stateParams', '<%= @model_name %>', 'flash'];
 

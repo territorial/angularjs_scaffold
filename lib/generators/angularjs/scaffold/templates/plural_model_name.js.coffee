@@ -4,22 +4,27 @@ root = global ? window
 
 <%= @plural_model_name %>_mod.config(['$stateProvider', ($stateProvider) ->
 
+  console.log("module <%= @plural_model_name %> initialized");
+  
+  basepath = (uri) ->
+    "/assets/templates/<%= @plural_model_name %>/" + uri
+    
   $stateProvider.state("list_<%= @plural_model_name %>",
     url: "/<%= @plural_model_name %>", 
     controller: <%= @model_name.pluralize %>IndexCtrl,
-    templateUrl: '<%= @plural_model_name %>/index.html'
+    templateUrl: basepath('index.html')
   ).state("new_<%= @model_name.downcase %>",
     url: "/<%= @plural_model_name %>/new",
     controller: <%= @model_name.pluralize %>CreateCtrl,
-    templateUrl: '<%= @plural_model_name %>/new.html'
+    templateUrl: basepath('new.html')
   ).state("show_<%= @model_name.downcase %>",
     url: "/<%= @plural_model_name %>/:id",
     controller: <%= @model_name.pluralize %>ShowCtrl,
-    templateUrl: '<%= @plural_model_name %>/show.html'
+    templateUrl: basepath('show.html')
   ).state("edit_<%= @model_name.downcase %>",
     url: "/<%= @plural_model_name %>/:id/edit",
     controller: <%= @model_name.pluralize %>EditCtrl,
-    templateUrl: '<%= @plural_model_name %>/edit.html'
+    templateUrl: basepath('edit.html')
   )
     
   
@@ -40,6 +45,8 @@ root = global ? window
     <%= "#{@model_name}" %>.remove
       id: @id
     , cb
+    , (error) ->
+        bootbox.alert {title: "Error", message: "Failed to perform this operation. #{error.status}"} 
   
   <%= @model_name  %>::confirm_destroy = ($scope) ->
     console.log "confirm_destroy called"
