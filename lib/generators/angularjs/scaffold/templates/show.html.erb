@@ -1,32 +1,33 @@
-<div class="page col-md-6">
-	 <div class="panel panel-default">
-		<div class="panel-heading"><strong><span class="glyphicon glyphicon-th"></span> <%= @model_name.titleize %> </strong></div>
-		<div class="panel-body">
-		    <div class="media">
-		        <div class="media-body">
-		            <ul class="list-unstyled list-info">
-		            	<%- columns.each do |column| -%>
-		                <li>
-		                    <span class="icon glyphicon glyphicon-user"></span>
-		                    <label><%= column.name.humanize %></label>
-		                    {{<%= @resource_name%>.<%= column.name %>}}
-		                </li>
-		                <%- end -%>
-		            </ul>
-		            
-		        </div>
-		    </div>
+<!-- START panel-->
+
+ <div id="show_user_{{<%= @resource_name%>.id}}" class="panel panel-info">
+    <div class="panel-heading portlet-handler"><%= @model_name.titleize %></div>
+    
+    <div class="panel-body">
+    		
+        <ul class="list-unstyled list-info">
+        	<%- columns.each do |column| -%>
+            <li>
+                <span class="icon glyphicon glyphicon-user"></span>
+                <label><%= column.name.humanize %></label>
+                {{<%= @resource_name%>.<%= column.name %>}}
+            </li>
+            <%- end -%>
+        </ul>
+            
+    </div>
 		
 	
 			            
-			<div class="form-actions">
-				<a href="/<%= @plural_model_name%>/{{<%= @resource_name%>.id}}/edit"
-				class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit <%= @model_name.titleize %> </a>
-				<button ng-click="destroy()" class="btn btn-danger">
-					<i class="glyphicon glyphicon-trash"></i> Delete
-				</button>
-				<a href="/<%= @plural_model_name%>" class="btn btn-default"> Back to <%= @plural_model_name%> </a>
-			</div>
-		</div>
+	<div class="panel-footer">
+		<a href="/<%= @plural_model_name%>/{{<%= @resource_name%>.id}}/edit"
+		class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit <%= @model_name.titleize %> </a>
+		<button ng-click="destroy()" class="btn btn-danger">
+			<i class="glyphicon glyphicon-trash"></i> Delete
+		</button>
+		<a href="/<%= @plural_model_name%>" class="btn btn-default"> Back to <%= @plural_model_name%> </a>
 	</div>
-</div>
+
+ </div>
+ 
+<!-- END panel-->

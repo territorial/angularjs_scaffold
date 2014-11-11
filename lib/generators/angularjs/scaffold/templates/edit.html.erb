@@ -1,17 +1,19 @@
-<div class="page col-md-6">
+<div class="row">
+  <div class="col-lg-6">
+   	<form name="edit<%= @model_name%>" validate-form="" novalidate="">
 	<div class="panel panel-default">
 		<div class="panel-heading">
-			<strong><span class="glyphicon glyphicon-th"></span> Edit <%= @model_name.titleize %></strong>
+			<div class="panel-title"> Edit <%= @model_name.titleize %></div>
 		</div>
 		<div class="panel-body">
-			<form name="edit<%= @model_name%>" class="form-horizontal" role="form">
+			
 			  <fieldset>
 			    <%- columns.each do |column| -%>
 			      <div class="form-group">
-			        <label class="col-sm-4 control-label">
+			        <label class="control-label">
 			          <%= column.name.titleize %>
 			        </label>
-			        <div class="col-sm-8 controls">
+			        
 			          <%- if ['description', 'body'].include? column.name -%>
 			            <textarea name="<%= @resource_name%>[<%= column.name %>]"
 			                   ng-model="<%= @resource_name%>.<%= column.name %>"
@@ -24,31 +26,26 @@
 			                   class="<%= column.field_type %> form-control" 
 			                   required>
 			          <%- end -%>
-			          <span ng-show="edit<%= @model_name%>.<%= column.name %>.$error.required"
-			                class="help-inline">
-			            Required
-			          </span>
-			        </div>
+			        
 			      </div>
 			    <%- end -%>
-			    <div class="form-group">
-			     	<div class="col-sm-offset-4 col-sm-8">
+			    
+			  </fieldset>
+			  
+			<div class="panel-footer">
+	              <div class="clearfix">		
 				      <button class="btn btn-success" ng-click="save()"
 				        ng-disabled="isClean() || edit<%= @model_name%>.$invalid">
 				        Save
-				      </button>
-				      <button ng-click="destroy()"
-				              ng-show="<%= @resource_name%>.id"
-				              class="btn btn-danger">
-				              <i class="glyphicon glyphicon-trash"></i>Delete
 				      </button>
 				      <a href="/<%= @plural_model_name%>" class="btn btn-default">
 				        Back to <%= @plural_model_name%>
 				      </a>
 			      </div>
-			    </div>
-			  </fieldset>
-			</form>
+			</div>
+			
 		</div>
+		</form>
+		
 	</div>
 </div>

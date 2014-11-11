@@ -8,7 +8,9 @@
 		</div>
 		
 		<div class="panel-body">
-			<table class="table table-hover">
+        <!-- START table-responsive-->
+        <div class="table-responsive">
+           <table class="table table-striped table-bordered table-hover">
 			  <thead>
 			    <tr>
 			      <%- columns.each do |column| -%>
@@ -43,6 +45,7 @@
 			    </tr>
 			  </tbody>
 			</table>
+		</div>
 		</div>
 	</div>
 
