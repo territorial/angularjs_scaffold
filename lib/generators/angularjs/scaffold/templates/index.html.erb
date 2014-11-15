@@ -3,7 +3,11 @@
 		<div class="panel-heading">
 			<strong><span class="glyphicon glyphicon-th"></span> <%= @controller %> </strong>
 			<span class="pull-right">
-			  <a href="/<%= @plural_model_name%>/new" class="btn-icon-round btn-icon-round-sm bg-success" style="margin-top: -4px;"><i class="fa fa-plus"></i></a>
+			  
+			  <a href="/<%= @plural_model_name%>/new" class="btn btn-labeled btn-info" style="margin-top: -4px;">
+			  	<span class="btn-label"><i class="fa fa-plus"></i></span>
+			  	New <%= @resource_name %>
+			  </a>
 			</span>
 		</div>
 		
