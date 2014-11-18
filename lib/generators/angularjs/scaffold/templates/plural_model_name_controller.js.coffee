@@ -16,7 +16,7 @@ root = global ? window
       <%= @resource_name %>.destroy -> 
         console.log("Destroy <%= @resource_name %> successfully")
         $scope.<%= @plural_model_name %> = _.without($scope.<%= @plural_model_name %>, <%= @resource_name %>)
-        $location.path "/users"
+        $location.path "/<%= @plural_model_name %>"
       , ->
         console.log("Destroy <%= @resource_name %> unsuccessful")
 

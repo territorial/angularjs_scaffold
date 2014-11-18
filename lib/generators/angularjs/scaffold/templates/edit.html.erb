@@ -7,11 +7,11 @@
 		</div>
 		<div class="panel-body">
 			
-			  <fieldset>
+			  
 			    <%- columns.each do |column| -%>
 			      <div class="form-group">
 			        <label class="control-label">
-			          <%= column.name.titleize %>
+			          <%= column.name.titleize %> *
 			        </label>
 			        
 			          <%- if ['description', 'body'].include? column.name -%>
@@ -30,7 +30,7 @@
 			      </div>
 			    <%- end -%>
 			    
-			  </fieldset>
+			  
 			  
 			<div class="panel-footer">
 	              <div class="clearfix">		
